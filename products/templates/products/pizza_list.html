@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container my-5" id="pizzas">
+    <h2 class="text-center mb-5">Filtered Pizzas</h2>
+    <form method="get" action="{% url 'pizza_list' %}">
+        <div class="mb-3">
+            <label for="sizeFilter">Filter by Size:</label>
+            <select id="sizeFilter" name="size" class="form-control w-25 d-inline">
+                <option value="">All Sizes</option>
+                <option value="Small" {% if request.GET.size == "Small" %}selected{% endif %}>Small</option>
+                <option value="Medium" {% if request.GET.size == "Medium" %}selected{% endif %}>Medium</option>
+                <option value="Large" {% if request.GET.size == "Large" %}selected{% endif %}>Large</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
+    <div class="row">
+        {% for pizza in pizzas %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pizza.name }}</h5>
+                    <p class="card-text">
+                        <strong>Size:</strong> {{ pizza.size.name }}<br />
+                        <strong>Sauce:</strong> {{ pizza.sauce.name }}<br />
+                        <strong>Crust:</strong> {{ pizza.crust_type.type }}<br />
+                        <strong>Price:</strong> ${{ pizza.price }}
+                    </p>
+
+                    <!-- Toggle button for toppings -->
+                    <button class="btn btn mt-2" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#pizzaToppings{{ pizza.id }}" aria-expanded="false" aria-controls="pizzaToppings{{ pizza.id }}">
+                        <i class="bi bi-arrow-down"></i> Toppings
+                    </button>
+
+                    <!-- Collapsible section for toppings -->
+                    <div class="collapse" id="pizzaToppings{{ pizza.id }}">
+                        <ul class="list-unstyled mt-3 card-text">
+                            {% for topping in pizza.toppings.all %}
+                            <li>{{ topping.name }} ({{ topping.extra_price }})</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

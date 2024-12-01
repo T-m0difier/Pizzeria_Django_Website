@@ -1,51 +1,83 @@
 <!-- index.html -->
-{% extends "products/layout.html" %}
+{% extends "layout.html" %}
+
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
 
 {% block body %}
+
 
 <!-- Featured Pizzas Section -->
 <div class="container my-5" id="pizzas">
     <h2 class="text-center mb-5">Featured Pizzas</h2>
-    <div class="row">
-        {% for pizza in pizzas %}
-        <!-- Pizza Card -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ pizza.name }}</h5>
-                    <p class="card-text">
-                        <strong>Size:</strong> {{ pizza.size.name }}<br />
-                        <strong>Sauce:</strong> {{ pizza.sauce.name }}<br />
-                        <strong>Crust:</strong> {{ pizza.crust_type.type }}<br />
-                        <strong>Price:</strong> ${{ pizza.price }}
-                    </p>
+    
+<!-- Pizza Filtering Form -->
+        <form method="get" action="{% url 'pizza_list' %}">
+            <div class="mb-3">
+                <label for="sizeFilter">Filter by Size:</label>
+                <select id="sizeFilter" name="size" class="form-control w-25 d-inline">
+                    <option value="">All Sizes</option>
+                    <option value="Small" {% if request.GET.size == "Small" %}selected{% endif %}>Small</option>
+                    <option value="Medium" {% if request.GET.size == "Medium" %}selected{% endif %}>Medium</option>
+                    <option value="Large" {% if request.GET.size == "Large" %}selected{% endif %}>Large</option>
+                </select>
+<!-- Search Bar -->
+                <label for="searchBar" class="ml-3">Search:</label>
+                <input type="text" id="searchBar" name="search" value="{{ request.GET.search }}" 
+                    class="form-control w-25 d-inline" placeholder="Search by name...">
+    
+                <button type="submit" class="btn btn-primary ml-2">Apply</button>
+            </div>
+        </form>
+        {% if pizzas %}
+        <div class="row">
+            {% for pizza in pizzas %}
+<!-- Pizza Card -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pizza.name }}</h5>
+                        <p class="card-text">
+                            <strong>Size:</strong> {{ pizza.size.name }}<br />
+                            <strong>Sauce:</strong> {{ pizza.sauce.name }}<br />
+                            <strong>Crust:</strong> {{ pizza.crust_type.type }}<br />
+                            <strong>Price:</strong> ${{ pizza.price }}
+                        </p>
 
-                    <!-- Toggle button for toppings -->
-                    <button class="btn btn mt-2" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#pizzaToppings{{ pizza.id }}" aria-expanded="false" aria-controls="pizzaToppings{{ pizza.id }}">
-                        <i class="bi bi-arrow-down"></i> Toppings
-                    </button>
+<!-- Toggle button for toppings -->
+                        <button class="btn btn mt-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#pizzaToppings{{ pizza.id }}" aria-expanded="false" aria-controls="pizzaToppings{{ pizza.id }}">
+                            <i class="bi bi-arrow-down"></i> Toppings
+                        </button>
 
-                    <!-- Collapsible section for toppings -->
-                    <div class="collapse" id="pizzaToppings{{ pizza.id }}">
-                        <ul class="list-unstyled mt-3 card-text">
-                            {% for topping in pizza.toppings.all %}
-                            <li>{{ topping.name }} ({{ topping.extra_price }})</li>
-                            {% endfor %}
-                        </ul>
+<!-- Collapsible section for toppings -->
+                        <div class="collapse" id="pizzaToppings{{ pizza.id }}">
+                            <ul class="list-unstyled mt-3 card-text">
+                                {% for topping in pizza.toppings.all %}
+                                <li>{{ topping.name }} ({{ topping.extra_price }})</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
                     </div>
-
-                    <!-- Add to Cart Button -->
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'cart:add_to_cart' pizza.id %}" class="btn btn-primary mt-2">Add to Cart</a>
-                    {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-primary mt-2">Login to Add</a>
-                    {% endif %}
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+    {% else %}
+        <div class="text-center my-5">
+            <h4>No pizzas match your search or filter criteria.</h4>
+        </div>
+    {% endif %}
     </div>
-</div>
+
+<a href="{% url 'build_pizza' %}" class="nav-link">Build Your Pizza</a>
+
 
 {% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+
