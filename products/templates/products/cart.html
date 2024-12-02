@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container my-5">
+    <h2>Your Cart</h2>
+
+    {% if cart_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Crust</th>
+                    <th>Sauce</th>
+                    <th>Toppings</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.pizza_name }}</td>
+                    <td>{{ item.size.name }}</td>
+                    <td>{{ item.crust.type }}</td>
+                    <td>{{ item.sauce.name }}</td>
+                    <td>
+                        {% for topping in item.toppings.all %}
+                            {{ topping.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="item_id" value="{{ item.id }}">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'index' %}" class="btn btn-primary">Continue Shopping</a>
+    {% else %}
+        <p>Your cart is empty. <a href="{% url 'index' %}">Go back to shop</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}

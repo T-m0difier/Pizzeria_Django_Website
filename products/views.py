@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import BuildYourPizzaForm
 from .models import Pizza
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from .models import CartItem
 
 
 # Create your views here. 
@@ -37,35 +40,54 @@ def pizza_list(request):
     return render(request, 'products/index.html', {'pizzas': pizzas})
 
 
+
+@login_required
 def build_pizza(request):
     if request.method == 'POST':
         form = BuildYourPizzaForm(request.POST)
         if form.is_valid():
-            # Create a new Pizza object
+            # Gather pizza details
+            name = form.cleaned_data['name']
             size = form.cleaned_data['size']
-            crust_type = form.cleaned_data['crust_type']
+            crust = form.cleaned_data['crust_type']
             sauce = form.cleaned_data['sauce']
             toppings = form.cleaned_data['toppings']
-            name = form.cleaned_data['name']
 
-            # Create and save the pizza object
-            pizza = Pizza.objects.create(
-                name=name,
+            # Calculate pizza price
+            base_price = 10  # Default base price
+            total_price = base_price
+            total_price += crust.extra_price
+            total_price += sauce.extra_price
+            total_price += sum(topping.extra_price for topping in toppings)
+            total_price *= size.multiplier
+            total_price = round(total_price, 2)
+
+            # Add the pizza to the user's cart
+            cart_item = CartItem.objects.create(
+                user=request.user,
+                pizza_name=name,
                 size=size,
-                crust_type=crust_type,
-                sauce=sauce
+                crust=crust,
+                sauce=sauce,
+                price=total_price
             )
-            pizza.toppings.set(toppings)
-            pizza.save()
+            cart_item.toppings.set(toppings)
 
-            # Redirect to the pizza list or confirmation page
-            return redirect('index')  # Update to your desired redirect
+            return redirect('cart')  # Redirect to the cart page
     else:
         form = BuildYourPizzaForm()
 
     return render(request, 'products/build_pizza.html', {'form': form})
 
+#cart view
+@login_required
+def cart(request):
+    cart_items = CartItem.objects.filter(user=request.user)
 
+    if request.method == "POST":
+        # Remove item from cart
+        item_id = request.POST.get("item_id")
+        item = get_object_or_404(CartItem, id=item_id, user=request.user)
+        item.delete()
 
-
-
+    return render(request, 'products/cart.html', {'cart_items': cart_items})

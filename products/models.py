@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
+from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
 # Function to generate unique IDs
 def generate_unique_id(prefix, model, field_name):
@@ -15,11 +16,17 @@ def generate_unique_id(prefix, model, field_name):
     return unique_id
 
 
+
+
 class Topping(models.Model):
     name = models.CharField(max_length=50)
     vegetarian = models.BooleanField(default=False)
     extra_price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     topping_id = models.CharField(max_length=10, unique=True, blank=True, editable=False)
+
+    def clean(self):
+        if self.extra_price < 0:
+            raise ValidationError("Extra price for topping cannot be negative.")
 
     def __str__(self):
         return f"{self.name} ({self.topping_id}) ({self.extra_price})"
@@ -30,6 +37,10 @@ class Sauce(models.Model):
     extra_price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     sauce_id = models.CharField(max_length=10, unique=True, blank=True, editable=False)
 
+    def clean(self):
+        if self.extra_price < 0:
+            raise ValidationError("Extra price for sauce cannot be negative.")
+
     def __str__(self):
         return f"{self.name} ({self.sauce_id}) ({self.extra_price})"
 
@@ -39,6 +50,10 @@ class Crust(models.Model):
     crust_id = models.CharField(max_length=10, unique=True, blank=True, editable=False)
     extra_price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
+    def clean(self):
+        if self.extra_price < 0:
+            raise ValidationError("Extra price for crust cannot be negative.")
+
     def __str__(self):
         return f"{self.type} ({self.crust_id}) ({self.extra_price})"
 
@@ -47,6 +62,10 @@ class Size(models.Model):
     name = models.CharField(max_length=20)
     multiplier = models.DecimalField(max_digits=4, decimal_places=2)  # Price multiplier based on size
     size_id = models.CharField(max_length=10, unique=True, blank=True, editable=False)
+
+    def clean(self):
+        if self.multiplier < 0:
+            raise ValidationError("Size multiplier cannot be negative.")
 
     def __str__(self):
         return f"{self.name} ({self.size_id}) ({self.multiplier})"
@@ -77,6 +96,24 @@ class Pizza(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.size.name}) ({self.id})"
+
+
+
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_items")
+    pizza_name = models.CharField(max_length=100)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+    crust = models.ForeignKey(Crust, on_delete=models.CASCADE)
+    sauce = models.ForeignKey(Sauce, on_delete=models.CASCADE)
+    toppings = models.ManyToManyField(Topping, blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.pizza_name} - {self.user.username}"
+
+
 
 
 # Signals to automatically generate IDs when each part is saved
