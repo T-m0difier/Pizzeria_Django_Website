@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+{% load static %}
+
 <!--Navbar-->
 {% block navbar %}
     {% include "navbar.html" %}
@@ -15,6 +17,10 @@
 <!-- Link to update profile -->
 <p>
     <a href="{% url 'update_profile' %}">Update your profile</a>
+</p>
+
+<p>
+    Check <a href="{% url 'order_history' %}">Order History</a>.
 </p>
 
 {% endblock %}

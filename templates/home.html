@@ -7,8 +7,18 @@
 
 
 {% block body %}
-<h1 class= "text-center mb-5">Welcome to the Pizza Shop Homepage!</h1>
-<!-- Add your homepage content here -->
+<div class="container">
+    <h1 class="text-center">Welcome to Oninja Pizzas.</h1>
+    <h4 class="text-center">Where we work in the shadows, to serve pizzas!.</h4>
+    </br>
+    <p class="justify-text text-center">
+        If you are new to our site and you do not know how to navigate it,</br>please take a few minutes to watch our dedicated video:
+    </p>
+    </br>
+    <p class="justify-text text-center">Ready to start Ordering? Then go to:
+    <a href={% url 'index' %} class=>Products Page</a>.</p>
+    
+</div>
 {% endblock %}
 
 
@@ -19,4 +29,4 @@
 
 
 
-<!--Note: the view for this is under products views, and the url is at the mothership-->
+<!--Note: the view for this is under products views, and the url is at the mothership templates-->

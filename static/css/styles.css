@@ -7,18 +7,21 @@
 
 /* Global Body Styles */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa; /* Light background */
-    color: #333; /* Dark text */
-    line-height: 1.6;
-    height: 100%;
+    background-image: url(); /* Background image */
+    background-size: contain;
+    background-position: center;
+    background-repeat: repeat;
+    height: 100vh; /* Full viewport height */
     margin: 0;
-    padding: 0;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
 }
-
 .container {
-    max-width: 1200px; /* Limit the container width to 1200px */
-    
+    background-color: rgba(70, 70, 70, 0.8); /* Semi-transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px; /* Limit the width of the content area */
+    margin: 20px auto; /* Center the content area */
+    position: relative;
 }
 
 
@@ -192,4 +195,9 @@ form .form-control:focus {
         font-size: 0.9rem;
     }
 
+}
+
+/*Text Justificator*/
+.justify-text {
+	text-align: justify;
 }

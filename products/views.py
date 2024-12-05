@@ -1,10 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BuildYourPizzaForm
-from .models import Pizza, CartItem
+from .models import Pizza, CartItem, Order, OrderItem
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
 # Create your views here. 
 
 def home(request):
@@ -135,18 +134,70 @@ def add_to_cart(request, pizza_id):
 
     return HttpResponse("Invalid request method", status=405)
 
+
+
 @login_required
 def checkout(request):
     # Get the user's cart items
     cart_items = CartItem.objects.filter(user=request.user)
 
     if request.method == "POST":
-        # Process payment logic or confirmation here
-        # For now, we'll just clear the cart
+        # Create a new order
+        total_price = sum(item.price for item in cart_items)
+        order = Order.objects.create(user=request.user, total_price=total_price)
+
+        # Create order items
+        for item in cart_items:
+            order_item = OrderItem.objects.create(
+                order=order,
+                pizza_name=item.pizza_name,
+                size=item.size,
+                crust=item.crust,
+                sauce=item.sauce,
+                price=item.price,
+            )
+            order_item.toppings.set(item.toppings.all())
+
+        # Clear the cart
         cart_items.delete()
         messages.success(request, "Thank you for your purchase! Your order is confirmed.")
-        return redirect('index')  # Redirect to the homepage after checkout
+
+        # Redirect to the order history page
+        return redirect('order_history')  # Create this URL and view later
 
     # Calculate total price
     total_price = sum(item.price for item in cart_items)
     return render(request, 'products/checkout.html', {'cart_items': cart_items, 'total_price': total_price})
+
+
+@login_required
+def order_history(request):
+    # Fetch all orders for the logged-in user
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+
+    if request.method == "POST":
+        order_id = request.POST.get("order_id")
+        action = request.POST.get("action")
+
+        if order_id and action:
+            order = get_object_or_404(Order, id=order_id, user=request.user)
+
+            if action == "delete":
+                order.delete()
+                messages.success(request, "Order deleted successfully.")
+            elif action == "repeat":
+                # Add the order items back to the cart
+                for item in order.items.all():
+                    cart_item = CartItem.objects.create(
+                        user=request.user,
+                        pizza_name=item.pizza_name,
+                        size=item.size,
+                        crust=item.crust,
+                        sauce=item.sauce,
+                        price=item.price,
+                    )
+                    cart_item.toppings.set(item.toppings.all())
+                messages.success(request, "Order added back to your cart.")
+                return redirect('cart')
+
+    return render(request, 'products/order_history.html', {'orders': orders})

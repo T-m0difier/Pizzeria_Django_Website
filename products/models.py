@@ -3,6 +3,11 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from decimal import Decimal
+
+
+
+
 
 # Function to generate unique IDs
 def generate_unique_id(prefix, model, field_name):
@@ -112,6 +117,36 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.pizza_name} - {self.user.username}"
+
+
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    is_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Order #{self.id} by {self.user.username} - Total: ${self.total_price}"
+
+    def calculate_total(self):
+        self.total_price = sum(item.price for item in self.orderitem_set.all())
+        self.save()
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
+    pizza_name = models.CharField(max_length=100)
+    size = models.ForeignKey('Size', on_delete=models.CASCADE)
+    crust = models.ForeignKey('Crust', on_delete=models.CASCADE)
+    sauce = models.ForeignKey('Sauce', on_delete=models.CASCADE)
+    toppings = models.ManyToManyField('Topping', blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.pizza_name} - {self.size.name} {self.crust.type} with {', '.join(topping.name for topping in self.toppings.all())}"
+
+
 
 
 

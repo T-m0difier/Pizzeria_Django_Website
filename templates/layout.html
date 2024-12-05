@@ -6,9 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Something Pizzas</title>
+    <title>Oninja Pizzas</title>
 
-    
     
 
     <!-- Link to the styles.css file -->
@@ -27,7 +26,7 @@
     
     {% block body %}
     {% endblock %}
-
+    
     <div id="content" name="content">
         {% block content %}
         {% endblock %}
@@ -38,12 +37,23 @@
     {% endblock %}
 
     {% if messages %}
-        <script>
-            {% for message in messages %}
-                alert("{{ message|escapejs }}");
-            {% endfor %}
+        <script id="django-messages" type="application/json">
+            [
+                {% for message in messages %}
+                    {
+                        "tags": "{{ message.tags }}",
+                        "text": "{{ message|escapejs }}"
+                    }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
         </script>
     {% endif %}
+
+<!-- SweetAlert2 Inclusion -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Link to SweetAlert messages script -->
+    <script src="{% static 'js/sweetalert-messages.js' %}"></script>
     
     <!-- Bootstrap JS and Popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
