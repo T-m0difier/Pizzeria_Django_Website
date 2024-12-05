@@ -1,5 +1,5 @@
 from django import forms
-from .models import Pizza, Topping, Sauce, Crust, Size
+from .models import Topping, Sauce, Crust, Size
 
 class BuildYourPizzaForm(forms.Form):
     name = forms.CharField(max_length=100, label="Pizza Name", required=True)

@@ -1,4 +1,10 @@
-{% extends "register/layout.html" %}
+{% extends "layout.html" %}
+
+<!--Navbar-->
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+
 {% block content %}
 {% load crispy_forms_tags %}
 <!--Register-->
@@ -6,7 +12,12 @@
 <form method="POST">
     {% csrf_token %}
     {{ register_form|crispy }}
-    <button class="btn btn primary" type="submit">Register</button>
+    <button class="btn btn danger" type="submit">Register</button>
 </form>
-<p class="text-center ">If you already have an account, <a href ="/login">login</a> instead.</p>
+<p class="text-center">If you already have an account, <a href ="/login">login</a> instead.</p>
+{% endblock %}
+
+<!--Footer-->
+{% block footer %}
+    {% include "footer.html" %}
 {% endblock %}

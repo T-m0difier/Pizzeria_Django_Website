@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+<!--Navbar-->
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h2>Checkout</h2>
+    <p>Review your order before confirming:</p>
+    
+    {% if cart_items %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.pizza_name }}</td>
+                    <td>${{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h4 class="mt-4">Total: ${{ total_price }}</h4>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Confirm Purchase</button>
+        </form>
+    {% else %}
+        <p>Your cart is empty. <a href="{% url 'index' %}">Go back to shop</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+<!--Footer-->
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

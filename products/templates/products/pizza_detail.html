@@ -1,6 +1,6 @@
 
 <div class="container my-5">
-    <h1 class="neon-text">{{ pizza.name }}</h1>
+    <h1>{{ pizza.name }}</h1>
     <p>
         <strong>Size:</strong> {{ pizza.size.name }}<br />
         <strong>Crust:</strong> {{ pizza.crust_type.type }}<br />
@@ -12,5 +12,5 @@
         <li>{{ topping.name }} (Extra: ${{ topping.extra_price }})</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'index' %}" class="btn btn-neon mt-4">Back to Pizza List</a>
+    <a href="{% url 'index' %}" class="btn btn mt-4">Back to Pizza List</a>
 </div>

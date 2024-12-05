@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from .forms import NewUserForm
+from .forms import NewUserForm, UserProfileUpdateForm
 from django.contrib import messages
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
+from django.contrib.auth.decorators import login_required
 
 def register_request(request):
     if request.method == "POST":
@@ -10,6 +11,7 @@ def register_request(request):
         if form.is_valid():
             user = form.save()
             print("User created:", user)  # Debug: Output the created user object
+            messages.info(request, f"User Created.")
             login(request, user)
             return redirect("/products")
 
@@ -44,3 +46,36 @@ def logout_request (request):
     logout(request)
     messages.info(request, "You have successfully logged out.")
     return redirect("/login")
+
+# View to display user profile
+@login_required
+def profile(request):
+    return render(request, 'register/profile.html', {'user': request.user})
+
+# View to update user credentials (username, email, password)
+def update_profile(request):
+    if request.method == 'POST':
+        form = UserProfileUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            # Save the updated form (which includes username and email)
+            user = form.save(commit=False)
+            
+            # If the password field is not empty, update the password
+            new_password = form.cleaned_data.get('password')
+            if new_password:
+                user.set_password(new_password)
+            
+            user.save()  # Save user object after updating password (if any)
+            
+            # If password was updated, re-authenticate the user
+            if new_password:
+                update_session_auth_hash(request, user)  # Keep the user logged in after changing the password
+
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('profile')  # Redirect to profile page or another page
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = UserProfileUpdateForm(instance=request.user)
+    
+    return render(request, 'register/update_profile.html', {'form': form})

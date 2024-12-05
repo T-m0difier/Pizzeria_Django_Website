@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+<!--Navbar-->
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<h1>Profile</h1>
+
+<!-- Display user information -->
+<p><strong>Username:</strong> {{ user.username }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+
+<!-- Link to update profile -->
+<p>
+    <a href="{% url 'update_profile' %}">Update your profile</a>
+</p>
+
+{% endblock %}
+
+<!--Footer-->
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

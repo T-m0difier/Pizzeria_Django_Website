@@ -1,12 +1,25 @@
 {% extends "layout.html" %}
 
+
+<!--Navbar-->
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+
+
 {% block body %}
 <div class="container my-5">
     <h2>Build Your Own Pizza</h2>
-    <form method="post">
+    <form method="post" class="custom-form">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Create Pizza</button>
     </form>
 </div>
+{% endblock %}
+
+
+<!--Footer-->
+{% block footer %}
+    {% include "footer.html" %}
 {% endblock %}
