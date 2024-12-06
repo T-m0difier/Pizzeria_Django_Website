@@ -17,18 +17,16 @@
     <!-- Pizza Filtering Form -->
     <form method="get" action="{% url 'pizza_list' %}" class="d-flex justify-content-center mb-4">
         <div class="mb-3 d-flex">
-            
             <select id="sizeFilter" name="size" class="form-control w-auto">
                 <option value="">All Sizes</option>
-                <option value="Small" {% if request.GET.size == "Small" %}selected{% endif %}>Small</option>
-                <option value="Medium" {% if request.GET.size == "Medium" %}selected{% endif %}>Medium</option>
-                <option value="Large" {% if request.GET.size == "Large" %}selected{% endif %}>Large</option>
+                {% for size in available_sizes %}
+                    <option value="{{ size.name }}" {% if request.GET.size == size.name %}selected{% endif %}>
+                        {{ size.name }}
+                    </option>
+                {% endfor %}
             </select>
-
-            
             <input type="text" id="searchBar" name="search" value="{{ request.GET.search }}" 
-                class="form-control w-auto" placeholder="Search by name...">
-
+                   class="form-control w-auto" placeholder="Search by name...">
             <button type="submit" class="btn btn-primary ms-2">Apply</button>
         </div>
     </form>
@@ -39,8 +37,14 @@
         <div class="col-lg-4 col-md-6 mb-4">
             <div class="card">
                 <div class="card-body">
+                    {% if pizza.image %}
+                        <img src="{{ pizza.image.url }}" alt="{{ pizza.name }}" class="pizza-image">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" alt="No image available" class="pizza-image">
+                    {% endif %}
                     <h5 class="card-title">{{ pizza.name }}</h5>
                     <p class="card-text">
+                        
                         <strong>Size:</strong> {{ pizza.size.name }}<br />
                         <strong>Sauce:</strong> {{ pizza.sauce.name }}<br />
                         <strong>Crust:</strong> {{ pizza.crust_type.type }}<br />

@@ -14,9 +14,11 @@
             <label for="sizeFilter">Filter by Size:</label>
             <select id="sizeFilter" name="size" class="form-control w-25 d-inline">
                 <option value="">All Sizes</option>
-                <option value="Small" {% if request.GET.size == "Small" %}selected{% endif %}>Small</option>
-                <option value="Medium" {% if request.GET.size == "Medium" %}selected{% endif %}>Medium</option>
-                <option value="Large" {% if request.GET.size == "Large" %}selected{% endif %}>Large</option>
+                {% for size in available_sizes %}
+                    <option value="{{ size.name }}" {% if request.GET.size == size.name %}selected{% endif %}>
+                        {{ size.name }}
+                    </option>
+                {% endfor %}
             </select>
             <button type="submit" class="btn btn-primary">Filter</button>
         </div>

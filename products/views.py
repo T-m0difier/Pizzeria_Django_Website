@@ -1,9 +1,12 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BuildYourPizzaForm
-from .models import Pizza, CartItem, Order, OrderItem
+from .models import Pizza, Size, CartItem, Order, OrderItem
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.cache import cache_control
+
+
 # Create your views here. 
 
 def home(request):
@@ -11,8 +14,11 @@ def home(request):
 
 
 def index(request):
-    return render(request, "products/index.html", {
-        "pizzas": Pizza.objects.all()
+    pizzas = Pizza.objects.all()
+    available_sizes = Size.objects.all()
+    return render(request, 'products/index.html', {
+        'pizzas': pizzas,
+        'available_sizes': available_sizes,
     })
 
 def pizza_detail(request, pizza_id):
@@ -22,26 +28,31 @@ def pizza_detail(request, pizza_id):
     })
 
 def pizza_list(request):
-    # Initialize the query with all pizzas
+    # Fetch all pizzas
     pizzas = Pizza.objects.all()
 
-    # Get filter parameters
+    # Get all available sizes dynamically
+    available_sizes = Size.objects.all()
+
+    # Filter parameters
     size_filter = request.GET.get('size', None)
     search_query = request.GET.get('search', None)
 
-    # Apply size filter if provided
+    # Apply size filter
     if size_filter:
         pizzas = pizzas.filter(size__name=size_filter)
 
-    # Apply search filter if provided
+    # Apply search filter
     if search_query:
         pizzas = pizzas.filter(name__icontains=search_query)
 
-    # Render the response
-    return render(request, 'products/index.html', {'pizzas': pizzas})
+    return render(request, 'products/index.html', {
+        'pizzas': pizzas,
+        'available_sizes': available_sizes,
+    })
 
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def build_pizza(request):
     if request.method == 'POST':
@@ -81,6 +92,7 @@ def build_pizza(request):
     return render(request, 'products/build_pizza.html', {'form': form})
 
 #cart view
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def cart(request):
     # Fetch all cart items for the logged-in user
@@ -103,6 +115,7 @@ def cart(request):
     # Render the updated cart
     return render(request, 'products/cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def add_to_cart(request, pizza_id):
     if request.method == "POST":
@@ -136,6 +149,7 @@ def add_to_cart(request, pizza_id):
 
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def checkout(request):
     # Get the user's cart items
@@ -170,6 +184,7 @@ def checkout(request):
     return render(request, 'products/checkout.html', {'cart_items': cart_items, 'total_price': total_price})
 
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def order_history(request):
     # Fetch all orders for the logged-in user

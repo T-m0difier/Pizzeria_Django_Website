@@ -82,7 +82,7 @@ class Pizza(models.Model):
     crust_type = models.ForeignKey('Crust', on_delete=models.CASCADE)
     sauce = models.ForeignKey('Sauce', on_delete=models.CASCADE)
     toppings = models.ManyToManyField('Topping', related_name='pizzas')
-
+    image = models.ImageField(upload_to='pizza_images/', blank=True, null=True)
     # Dynamic Price property
     @property
     def price(self):

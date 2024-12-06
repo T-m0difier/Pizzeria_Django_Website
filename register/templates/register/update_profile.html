@@ -9,19 +9,21 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
+
 <!--Update Profile-->
-<h1>Update Profile</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button class="btn btn-primary" type="submit">Update</button>
-</form>
+<div class="container my-5">
+    <h1>Update Profile</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-primary" type="submit">Update</button>
+    </form>
 
-<p class="text-center">
-    <a href="/profile">Go back to your profile</a>
-</p>
-{% endblock %}
-
+    <p class="text-center">
+        <a href="/profile">Go back to your profile</a>
+    </p>
+    {% endblock %}
+</div>
 <!--Footer-->
 {% block footer %}
     {% include "footer.html" %}

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 
 def register_request(request):
     if request.method == "POST":
@@ -11,7 +12,7 @@ def register_request(request):
         if form.is_valid():
             user = form.save()
             print("User created:", user)  # Debug: Output the created user object
-            messages.info(request, f"User Created.")
+            messages.success(request, f"User Created.")
             login(request, user)
             return redirect("/products")
 
@@ -44,15 +45,20 @@ def login_request (request):
 
 def logout_request (request):
     logout(request)
-    messages.info(request, "You have successfully logged out.")
+    request.session.flush()  # Clears all session data
+    messages.success(request, "You have successfully logged out.")
     return redirect("/login")
 
 # View to display user profile
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def profile(request):
     return render(request, 'register/profile.html', {'user': request.user})
 
 # View to update user credentials (username, email, password)
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
+
 def update_profile(request):
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, instance=request.user)
@@ -65,12 +71,8 @@ def update_profile(request):
             if new_password:
                 user.set_password(new_password)
             
-            user.save()  # Save user object after updating password (if any)
-            
-            # If password was updated, re-authenticate the user
-            if new_password:
-                update_session_auth_hash(request, user)  # Keep the user logged in after changing the password
-
+            user.save()  # Save user object after updating credentials (if any)
+            update_session_auth_hash(request, user)
             messages.success(request, 'Your profile has been updated successfully!')
             return redirect('profile')  # Redirect to profile page or another page
         else:

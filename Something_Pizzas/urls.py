@@ -18,6 +18,9 @@ from django.contrib import admin
 from products import views
 from django.urls import include, path
 from register.views import register_request, login_request, logout_request, update_profile, profile
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -29,3 +32,6 @@ urlpatterns = [
     path('profile/update/', update_profile, name="update_profile"),
     path('admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
