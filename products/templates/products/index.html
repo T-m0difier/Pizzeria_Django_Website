@@ -52,14 +52,26 @@
                     </p>
 
                     <!-- Toggle button for toppings -->
-                    <div class="d-flex justify-content-between">
+                    <div>
                         <button class="btn btn mt-2" type="button" data-bs-toggle="collapse"
                             data-bs-target="#pizzaToppings{{ pizza.id }}" aria-expanded="false" 
                             aria-controls="pizzaToppings{{ pizza.id }}">
                             <i class="bi bi-arrow-down"></i> Toppings
                         </button>
+                    </div>
+                        
 
-                        <!-- Add to Cart Button -->
+                    <!-- Collapsible section for toppings -->
+                        <div class="collapse mt-3" id="pizzaToppings{{ pizza.id }}">
+                            <ul class="list-unstyled card-text">
+                                {% for topping in pizza.toppings.all %}
+                                <li>{{ topping.name }} ({{ topping.extra_price }})</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                    <!-- Add to Cart Button -->
+                    <div>
                         {% if user.is_authenticated %}
                             <form action="{% url 'add_to_cart' pizza.id %}" method="post">
                                 {% csrf_token %}
@@ -69,16 +81,6 @@
                             <a href="{% url 'login' %}?next={% url 'index' %}" class="btn btn-primary mt-3">Login to Add to Cart</a>
                         {% endif %}
                     </div>
-
-                    <!-- Collapsible section for toppings -->
-                    <div class="collapse mt-3" id="pizzaToppings{{ pizza.id }}">
-                        <ul class="list-unstyled card-text">
-                            {% for topping in pizza.toppings.all %}
-                            <li>{{ topping.name }} ({{ topping.extra_price }})</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-
                 </div>
             </div>
         </div>

@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block navbar %}
+    {% include "navbar.html" %}
+{% endblock %}
+
 {% block content %}
 <div class="container my-5">
     <h2>Order History</h2>
@@ -36,4 +40,9 @@
         <p>You have no orders yet. <a href="{% url 'index' %}">Start shopping</a>.</p>
     {% endif %}
 </div>
+{% endblock %}
+
+
+{% block footer %}
+    {% include "footer.html" %}
 {% endblock %}

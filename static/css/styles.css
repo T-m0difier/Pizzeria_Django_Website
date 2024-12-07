@@ -5,12 +5,11 @@ body {
     background-size: contain;
     background-position: center;
     background-repeat: repeat;
-    height: 100vh; /* Full viewport height */
+    height: 100vh; 
     margin: 0;
     transition: background-color 0.3s, color 0.3s; /* Smooth transition */
 }
 .container {
-    background-color: rgba(70, 70, 70, 0.8); /* Semi-transparent white background */
     padding: 20px;
     border-radius: 10px;
     max-width: 600px; /* Limit the width of the content area */
@@ -40,19 +39,19 @@ body {
 
 
 /* Footer */
-
-
-
 .footer {
-    position: relative;
+    position: fixed; /* Keeps the footer at the bottom of the viewport */
+    bottom: 0;
+    left: 0;
     width: 100%;
-    background-color: #212529; /* or any other dark color */
-    color: white;
+    background-color: #212529; /* Dark footer background */
+    color: white; /* Footer text color */
     text-align: center;
     padding: 10px 0;
+    z-index: 1000; /* Ensures the footer is always on top of other content */
 }
 
-/* Additional styling for links */
+/* Footer link styles */
 .footer a {
     color: white;
     margin-left: 15px;
@@ -65,24 +64,24 @@ body {
 
 /* Cards */
 .card {
-    background-color: #333; /* dark background */
-    border: 1px solid #333;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card-body {
+    background-color: #1A252F;
     padding: 20px;
 }
 
 .card-title {
-    color: #fff;
+    color: #ff0000;
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .card-text {
+    color: #ff0000;
     font-size: 0.9rem;
     margin-bottom: 15px;
 }
@@ -116,10 +115,17 @@ body {
 }
 
 /* Forms */
+/* Center the form on the page */
 form {
-    margin: 20px 0;
+    margin: 20px auto; /* Center the form horizontally */
+    display: flex;
+    flex-direction: column; /* Stack the fields vertically */
+    align-items: center; /* Center the fields horizontally */
+    justify-content: center; /* Center the fields vertically (optional, if the container height allows) */
+    max-width: 500px; /* Optional: Limit form width */
 }
 
+/* Style the form controls */
 form .form-control {
     background-color: #212529; /* dark background for inputs */
     color: #fff; /* light text */
@@ -132,31 +138,28 @@ form .form-control {
     margin-bottom: 15px;
 }
 
-/* Ensure placeholder text stays light */
-form .form-control::placeholder {
-    color: #bec4c9; /* Light in-form text */
-}
-
-/* Ensure labels are readable */
 form label {
-    color: #333; /* Dark out-form text */
+    color: #333;
     font-weight: bold;
-    display: block;
     margin-bottom: 5px;
+    text-align: center; 
 }
 
-/* Fix for focus state to keep the background dark */
+/* Fix for placeholder and focus states (unchanged) */
+form .form-control::placeholder {
+    color: #bec4c9;
+}
+
 form .form-control:focus {
-    background-color: #212529 !important; /* Keep dark background on focus */
-    color: #fff; /* Keep text light */
-    border-color: #ddd !important; /* Maintain light border color */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional: blue glow for focus */
+    background-color: #212529 !important;
+    color: #fff;
+    border-color: #ddd !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Remove any default browser styles that may interfere */
 form .form-control:active,
 form .form-control:focus {
-    outline: none; /* Prevent the default outline that some browsers add */
+    outline: none;
 }
 
 
