@@ -34,7 +34,7 @@
     {% if pizzas %}
     <div class="row">
         {% for pizza in pizzas %}
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="container col-lg-4 col-md-6 mb-4">
             <div class="card">
                 <div class="card-body">
                     {% if pizza.image %}
@@ -42,7 +42,7 @@
                     {% else %}
                         <img src="{% static 'images/placeholder.png' %}" alt="No image available" class="pizza-image">
                     {% endif %}
-                    <h5 class="card-title">{{ pizza.name }}</h5>
+                    <h4 class="card-text2">{{ pizza.name }}</h4>
                     <p class="card-text">
                         
                         <strong>Size:</strong> {{ pizza.size.name }}<br />
@@ -53,10 +53,10 @@
 
                     <!-- Toggle button for toppings -->
                     <div>
-                        <button class="btn btn mt-2" type="button" data-bs-toggle="collapse"
+                        <button class="btn2 mt-2" type="button" data-bs-toggle="collapse"
                             data-bs-target="#pizzaToppings{{ pizza.id }}" aria-expanded="false" 
                             aria-controls="pizzaToppings{{ pizza.id }}">
-                            <i class="bi bi-arrow-down"></i> Toppings
+                            Toppings
                         </button>
                     </div>
                         

@@ -8,7 +8,7 @@ class BuildYourPizzaForm(forms.Form):
     sauce = forms.ModelChoiceField(queryset=Sauce.objects.all(), label="Sauce", required=True)
     toppings = forms.ModelMultipleChoiceField(
         queryset=Topping.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.SelectMultiple(attrs={'size': '5'}),  # size is optional, just changes the number of visible options
         label="Toppings",
         required=False
     )

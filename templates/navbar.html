@@ -1,9 +1,8 @@
 {% block navbar %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!-- Link to home page (index.html) -->
-    <a class="navbar-brand" href="{% url 'home' %}">Pizza Shop</a> <!-- This will take you to home.html or the home page -->
+    <a class="navbar-brand" href="{% url 'home' %}">Pizza Shop</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span> <!-- This is the burger icon -->
+        <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
@@ -11,22 +10,28 @@
                 <a class="nav-link" href="{% url 'index' %}">Products</a>
             </li>
             {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'build_pizza' %}">Build Your Pizza</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cart' %}">Cart</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'build_pizza' %}">Build Your Pizza</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                {% if user.is_superuser %}
+                <!-- Admin-only Link -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/">Admin Dashboard</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
             {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
             {% endif %}
         </ul>
     </div>

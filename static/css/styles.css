@@ -64,35 +64,34 @@ body {
 
 /* Cards */
 .card {
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #212529;
 }
 
 .card-body {
-    background-color: #1A252F;
-    padding: 20px;
+    background-color: #212529;
+    border-radius: 5px;
 }
 
-.card-title {
-    color: #ff0000;
+.card-text2 {
+    color: #fff;
     font-size: 1.25rem;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .card-text {
-    color: #ff0000;
+    color: #fff;
     font-size: 0.9rem;
     margin-bottom: 15px;
 }
 
 /* Buttons */
-.btn {
-    font-size: 1rem;
-    padding: 8px 16px;
+.btn2 {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
     border-radius: 5px;
-    border: none;
-    cursor: pointer;
+
 }
 
 .btn-primary {
@@ -114,6 +113,13 @@ body {
     color: #fff;
 }
 
+
+
+.btn-drop {
+    background-color: #fc5000;
+    color: #fff;
+}
+
 /* Forms */
 /* Center the form on the page */
 form {
@@ -122,7 +128,7 @@ form {
     flex-direction: column; /* Stack the fields vertically */
     align-items: center; /* Center the fields horizontally */
     justify-content: center; /* Center the fields vertically (optional, if the container height allows) */
-    max-width: 500px; /* Optional: Limit form width */
+    max-width: 200px; /* Optional: Limit form width */
 }
 
 /* Style the form controls */
@@ -170,7 +176,7 @@ form .form-control:focus {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    background-color: #fff;
+    background-color: #212529;
 }
 
 .table th,
@@ -178,11 +184,12 @@ form .form-control:focus {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
+    color: #fff;
 }
 
 .table th {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: #212529;
+    color: #fff;
     font-weight: bold;
 }
 

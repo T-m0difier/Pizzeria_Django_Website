@@ -34,7 +34,7 @@ class Topping(models.Model):
             raise ValidationError("Extra price for topping cannot be negative.")
 
     def __str__(self):
-        return f"{self.name} ({self.topping_id}) ({self.extra_price})"
+        return f"{self.name} ({self.extra_price})"
 
 
 class Sauce(models.Model):
@@ -47,7 +47,7 @@ class Sauce(models.Model):
             raise ValidationError("Extra price for sauce cannot be negative.")
 
     def __str__(self):
-        return f"{self.name} ({self.sauce_id}) ({self.extra_price})"
+        return f"{self.name} ({self.extra_price})"
 
 
 class Crust(models.Model):
@@ -60,7 +60,7 @@ class Crust(models.Model):
             raise ValidationError("Extra price for crust cannot be negative.")
 
     def __str__(self):
-        return f"{self.type} ({self.crust_id}) ({self.extra_price})"
+        return f"{self.type} ({self.extra_price})"
 
 
 class Size(models.Model):
@@ -73,7 +73,7 @@ class Size(models.Model):
             raise ValidationError("Size multiplier cannot be negative.")
 
     def __str__(self):
-        return f"{self.name} ({self.size_id}) ({self.multiplier})"
+        return f"{self.name} ({self.multiplier})"
 
 
 class Pizza(models.Model):
