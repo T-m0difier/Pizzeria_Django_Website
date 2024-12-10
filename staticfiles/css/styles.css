@@ -1,0 +1,211 @@
+
+/* Global Body Styles */
+body {
+    background-image: url(); /* Background image */
+    background-size: contain;
+    background-position: center;
+    background-repeat: repeat;
+    height: 100vh; 
+    margin: 0;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+.container {
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px; /* Limit the width of the content area */
+    margin: 20px auto; /* Center the content area */
+    position: relative;
+    text-align: center;
+        
+}
+
+
+/* Navbar */
+.navbar {
+    background-color: #212529; /* Dark navbar */
+    color: #fff;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 12px;
+}
+
+.navbar a:hover {
+    color: #adb5bd;
+}
+
+
+
+/* Footer */
+.footer {
+    position: fixed; /* Keeps the footer at the bottom of the viewport */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #212529; /* Dark footer background */
+    color: white; /* Footer text color */
+    text-align: center;
+    padding: 10px 0;
+    z-index: 1000; /* Ensures the footer is always on top of other content */
+}
+
+/* Footer link styles */
+.footer a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Cards */
+.card {
+    border: 2px solid #212529;
+}
+
+.card-body {
+    background-color: #212529;
+    border-radius: 5px;
+}
+
+.card-text2 {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.card-text {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+/* Buttons */
+.btn2 {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:disabled {
+    background-color: #6c757d;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+
+
+.btn-drop {
+    background-color: #fc5000;
+    color: #fff;
+}
+
+/* Forms */
+/* Center the form on the page */
+form {
+    margin: 20px auto; /* Center the form horizontally */
+    display: flex;
+    flex-direction: column; /* Stack the fields vertically */
+    align-items: center; /* Center the fields horizontally */
+    justify-content: center; /* Center the fields vertically (optional, if the container height allows) */
+    max-width: 200px; /* Optional: Limit form width */
+}
+
+/* Style the form controls */
+form .form-control {
+    background-color: #212529; /* dark background for inputs */
+    color: #fff; /* light text */
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 15px;
+}
+
+form label {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center; 
+}
+
+/* Fix for placeholder and focus states (unchanged) */
+form .form-control::placeholder {
+    color: #bec4c9;
+}
+
+form .form-control:focus {
+    background-color: #212529 !important;
+    color: #fff;
+    border-color: #ddd !important;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+form .form-control:active,
+form .form-control:focus {
+    outline: none;
+}
+
+
+
+
+/* Tables */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #212529;
+}
+
+.table th,
+.table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    color: #fff;
+}
+
+.table th {
+    background-color: #212529;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .navbar {
+        font-size: 0.9rem;
+    }
+
+}
+
+/*Text Justificator*/
+.justify-text {
+	text-align: justify;
+}

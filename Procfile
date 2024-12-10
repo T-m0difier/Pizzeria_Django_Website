@@ -1,1 +1,1 @@
-web: gunicorn Tactical_Pizzas
+web: 'gunicorn Tactical_Pizzas.wsgi'
