@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
@@ -22,7 +23,7 @@ def register_request(request):
         form = NewUserForm()
     return render(request, "register/register.html", {"register_form": form})
 
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def login_request (request):
     if request.user.is_authenticated:
         return redirect("/products")
@@ -43,6 +44,7 @@ def login_request (request):
         form = AuthenticationForm()
     return render(request, "register/login.html", {"login_form": form})
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def logout_request (request):
     logout(request)
     request.session.flush()  # Clears all session data
@@ -63,21 +65,20 @@ def update_profile(request):
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
-            # Save the updated form (which includes username and email)
             user = form.save(commit=False)
-            
-            # If the password field is not empty, update the password
+
+            # Handle password update
             new_password = form.cleaned_data.get('password')
             if new_password:
                 user.set_password(new_password)
-            
-            user.save()  # Save user object after updating credentials (if any)
-            update_session_auth_hash(request, user)
+
+            user.save()
+            update_session_auth_hash(request, user)  # Keep user logged in after password change
             messages.success(request, 'Your profile has been updated successfully!')
-            return redirect('profile')  # Redirect to profile page or another page
+            return redirect('profile')
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
         form = UserProfileUpdateForm(instance=request.user)
-    
+
     return render(request, 'register/update_profile.html', {'form': form})

@@ -32,10 +32,13 @@
         <h4 class="mt-4">Total: ${{ total_price }}</h4>
         <form method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success">Confirm Purchase</button>
+            <button type="submit" class="btn btn-success">Confirm Purchase <i class="bi bi-cart-check-fill"></i></button>
+            
         </form>
+        <p>OR</p>
+        <a href="{% url 'cart' %}" class="btn btn-primary">Back to Cart <i class="bi bi-cart-fill"></i></a>
     {% else %}
-        <p>Your cart is empty. <a href="{% url 'index' %}">Go back to shop</a>.</p>
+        <p>Your cart is empty. <a href="{% url 'index' %}">Go back to shop <i class="bi bi-shop"></i></a>.</p>
     {% endif %}
 </div>
 {% endblock %}

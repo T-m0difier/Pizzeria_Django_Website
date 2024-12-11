@@ -10,6 +10,14 @@ body {
     background-attachment: fixed; /* Keep the background static while scrolling */
 }
 
+.box {
+    background-color: #2c2c2c;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px; /* Limit the width of the content area */
+    margin: 20px auto; /* Center the content area */
+    position: relative;
+}
 
 .container {
     padding: 20px;
@@ -20,7 +28,6 @@ body {
     text-align: center;
         
 }
-
 
 /* Navbar */
 .navbar {

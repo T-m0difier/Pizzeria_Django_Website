@@ -11,14 +11,11 @@
 <!-- Body -->
 {% block body %}
 <div class="container my-5">
-    <h2>Build Your Own Pizza</h2>
-    <form method="post">
+    <h2>Edit Pizza</h2>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        
         {{ form|crispy }}
-        
-        <!-- Submit button -->
-        <button type="submit" class="btn btn-primary">Create Pizza</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>
 {% endblock %}
