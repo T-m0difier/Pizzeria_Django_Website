@@ -1,14 +1,16 @@
-
 /* Global Body Styles */
 body {
-    background-image: url(); /* Background image */
-    background-size: contain;
-    background-position: center;
-    background-repeat: repeat;
-    height: 100vh; 
+    background: linear-gradient(135deg, #f5e0b7 0%, #e7a977 50%, #d97b46 100%); /* Warm, pizza-inspired gradient */
+    color: #2c2c2c; /* Dark gray for clear readability */
     margin: 0;
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    padding: 0;
+    font-family: "Poppins", Arial, sans-serif; /* Clean and modern font */
+    min-height: 100vh; /* Ensure the background covers the full screen height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    background-attachment: fixed; /* Keep the background static while scrolling */
 }
+
+
 .container {
     padding: 20px;
     border-radius: 10px;
@@ -83,6 +85,14 @@ body {
     color: #fff;
     font-size: 0.9rem;
     margin-bottom: 15px;
+}
+
+.pizza-image {
+    width: 100%;         /* Makes the image scale to fill the width of the card */
+    height: auto;        /* Maintains the aspect ratio of the image */
+    max-width: 100%;     /* Prevents the image from becoming too large */
+    max-height: 250px;   /* You can adjust this value to suit your card's height */
+    object-fit: cover;   /* Ensures the image covers the space without stretching */
 }
 
 /* Buttons */

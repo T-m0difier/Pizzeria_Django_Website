@@ -27,7 +27,7 @@
             </select>
             <input type="text" id="searchBar" name="search" value="{{ request.GET.search }}" 
                    class="form-control w-auto" placeholder="Search by name...">
-            <button type="submit" class="btn btn-primary ms-2">Apply</button>
+            <button type="submit" class="btn btn-primary ms-2" style="height: 45px;">Apply</button>
         </div>
     </form>
 
@@ -56,7 +56,7 @@
                         <button class="btn2 mt-2" type="button" data-bs-toggle="collapse"
                             data-bs-target="#pizzaToppings{{ pizza.id }}" aria-expanded="false" 
                             aria-controls="pizzaToppings{{ pizza.id }}">
-                            Toppings
+                            Toppings <i class="bi bi-caret-down-fill"></i>
                         </button>
                     </div>
                         
@@ -75,7 +75,7 @@
                         {% if user.is_authenticated %}
                             <form action="{% url 'add_to_cart' pizza.id %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-success mt-3">Add to Cart</button>
+                                <button type="submit" class="btn btn-success mt-3">Add to Cart <i class="bi bi-cart-plus-fill"></i></button>
                             </form>
                         {% else %}
                             <a href="{% url 'login' %}?next={% url 'index' %}" class="btn btn-primary mt-3">Login to Add to Cart</a>
