@@ -61,15 +61,17 @@ def profile(request):
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required
 def update_profile(request):
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
 
-            # Handle password update
+            # Handle password update only if the field is not empty
             new_password = form.cleaned_data.get('password')
-            if new_password:
+            if new_password:  # Only update the password if it's provided
                 user.set_password(new_password)
 
             user.save()

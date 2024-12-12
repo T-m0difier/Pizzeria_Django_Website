@@ -1,9 +1,11 @@
+{% load static %}
+
 {% block footer %}
 <!-- Footer -->
 <footer class="footer">
     <p>&copy; 2024 Something Pizzas | All rights reserved</p>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms & Conditions</a>
+    <a href="{% static 'files/Tactical Pizzas Privacy Policy.txt' %}" download>Privacy Policy</a> | 
+    <a href="{% static 'files/Tactical Pizzas Terms of Service.txt' %}" download>Terms of Service</a>
 </footer>
 
 {% endblock %}

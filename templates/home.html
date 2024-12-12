@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
+
+{% load static %}
 <!--Navbar-->
 {% block navbar %}
     {% include "navbar.html" %}
@@ -16,8 +18,9 @@
     </p>
     <div class="video-container text-center">
         <video width="640" height="360" controls>
-            <source src="#" type="video/mp4">
-            Your browser does not support the video tag. Please download the video <a href="#">here</a>.
+            <source src="{% static 'videos/NavigationVideo.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag. Please download the video 
+            <a href="{% static 'videos/NavigationVideo.mp4' %}">here</a>.
         </video>
     </div>
     </br>
