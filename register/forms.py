@@ -14,7 +14,7 @@ class NewUserForm(UserCreationForm):
 
 
 class UserProfileUpdateForm(UserChangeForm):
-    # Fields for updating the password
+    # Adding fields for updating the password
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'placeholder': 'New Password'}),
         required=False,
@@ -28,20 +28,19 @@ class UserProfileUpdateForm(UserChangeForm):
     
     class Meta:
         model = User
-        fields = ['username', 'email']  # Exclude 'password' since it is a custom field
+        fields = ['username', 'email', 'password']
 
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password2 = cleaned_data.get("password2")
 
-        # Validate that passwords match if provided
-        if password or password2:  # Only validate if at least one password field is filled
+        # If both fields are provided, make sure they match
+        if password and password2:
             if password != password2:
                 raise ValidationError("The passwords do not match.")
             
             # Validate password strength using Django's validators
-            if password:
-                validate_password(password, self.instance)
-
+            validate_password(password, self.instance)
+        
         return cleaned_data
