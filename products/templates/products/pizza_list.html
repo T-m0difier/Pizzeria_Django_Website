@@ -2,11 +2,14 @@
 
 {% load static %}
 
+<!--Navbar-->
 {% block navbar %}
     {% include "navbar.html" %}
 {% endblock %}
-
+<!--ends here-->
+<!--Main Content-->
 {% block body %}
+<!--Filtered Pizzas Showcase-->
 <div class="container my-5" id="pizzas">
     <h2 class="text-center mb-5">Filtered Pizzas</h2>
     <form method="get" action="{% url 'pizza_list' %}">
@@ -58,7 +61,7 @@
     </div>
 </div>
 {% endblock %}
-
+<!-- Main content ends here-->
 <!--Footer-->
 {% block footer %}
     {% include "footer.html" %}

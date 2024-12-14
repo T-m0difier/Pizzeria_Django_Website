@@ -12,3 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+//This is my sweet alert messages functionality.
+//It takes the messages that are already being displayed and makes them look better

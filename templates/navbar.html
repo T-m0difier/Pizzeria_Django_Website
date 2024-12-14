@@ -15,6 +15,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Products</a>
             </li>
+            <!--Links for Registered Users-->
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'build_pizza' %}">Build Your Pizza</a>
@@ -39,7 +40,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}">Logout <i class="bi bi-box-arrow-right"></i></a>
                 </li>
-            {% else %}
+            {% else %} <!--Login Link-->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Login <i class="bi bi-box-arrow-in-right"></i></a>
                 </li>

@@ -2,6 +2,7 @@ from django import forms
 from .models import Topping, Sauce, Crust, Size, Pizza
 from django.forms import ModelForm
 
+#Build Your Own Pizza_Form
 class BuildYourPizzaForm(forms.Form):
     name = forms.CharField(max_length=100, label="Pizza Name", required=True)
     size = forms.ModelChoiceField(queryset=Size.objects.all(), label="Size", required=True)
@@ -14,7 +15,7 @@ class BuildYourPizzaForm(forms.Form):
         required=False
     )
 
-
+#Staff Capabilities Forms
 class ToppingForm(ModelForm):
     class Meta:
         model = Topping

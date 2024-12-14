@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 
+<!--Navbar-->
 {% block navbar %}
     {% include "navbar.html" %}
 {% endblock %}
-
+<!--ends here-->
+<!--Main Content-->
 {% block content %}
 <div class="container my-5">
     <h2>Order History</h2>
@@ -14,6 +16,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Total Price</th>
+                    <th>Pizzas</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -23,15 +26,45 @@
                     <td>{{ order.created_at|date:"M d, Y H:i" }}</td>
                     <td>${{ order.total_price }}</td>
                     <td>
+                        <!-- Collapsible button for showing Pizzas -->
+                        <button 
+                            class="btn btn-info btn-sm" 
+                            type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#order-{{ order.id }}-details" 
+                            aria-expanded="false" 
+                            aria-controls="order-{{ order.id }}-details">
+                            Show Details
+                        </button>
+                    </td>
+                    <td>
                         <form method="post">
                             {% csrf_token %}
                             <input type="hidden" name="order_id" value="{{ order.id }}">
 
                             <button name="action" value="repeat" class="btn btn-primary">Repeat Order <i class="bi bi-arrow-clockwise"></i></button>
                             
-                            <button name="action" value="delete" class="btn btn-danger" >Delete <i class="bi bi-trash-fill"></i></button>
-                            
+                            <button name="action" value="delete" class="btn btn-danger">Delete <i class="bi bi-trash-fill"></i></button>
                         </form>
+                    </td>
+                </tr>
+                <!-- Collapsible section containing Pizzas-->
+                <tr class="collapse" id="order-{{ order.id }}-details">
+                    <td colspan="4">
+                        <ul class="list-group">
+                            {% for item in order.items.all %}
+                            <li class="list-group-item">
+                                <strong>{{ item.pizza_name }}</strong> 
+                                ({{ item.size.name }}, {{ item.crust.name }}, {{ item.sauce.name }}) <br>
+                                Toppings: 
+                                {% for topping in item.toppings.all %}
+                                    {{ topping.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                                <br>
+                                <strong>Price:</strong> ${{ item.price }}
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </td>
                 </tr>
                 {% endfor %}
@@ -42,8 +75,8 @@
     {% endif %}
 </div>
 {% endblock %}
-
-
+<!--ends here-->
+<!--Footer-->
 {% block footer %}
     {% include "footer.html" %}
 {% endblock %}

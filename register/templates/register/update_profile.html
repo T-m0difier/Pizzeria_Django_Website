@@ -6,7 +6,8 @@
 {% block navbar %}
     {% include "navbar.html" %}
 {% endblock %}
-
+<!--ends here-->
+<!--Main Content-->
 {% block content %}
 {% load crispy_forms_tags %}
 
@@ -22,8 +23,10 @@
     <p class="text-center">
         <a href="/profile">Go back to your profile</a>
     </p>
-    {% endblock %}
+    
 </div>
+{% endblock %}
+<!--ends here-->
 <!--Footer-->
 {% block footer %}
     {% include "footer.html" %}

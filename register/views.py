@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 
+#Registration view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def register_request(request):
     if request.method == "POST":
@@ -23,6 +24,7 @@ def register_request(request):
         form = NewUserForm()
     return render(request, "register/register.html", {"register_form": form})
 
+#Login request view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def login_request (request):
     if request.user.is_authenticated:
@@ -44,6 +46,7 @@ def login_request (request):
         form = AuthenticationForm()
     return render(request, "register/login.html", {"login_form": form})
 
+#logout request view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def logout_request (request):
     logout(request)
@@ -58,9 +61,6 @@ def profile(request):
     return render(request, 'register/profile.html', {'user': request.user})
 
 # View to update user credentials (username, email, password)
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@login_required
-
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def update_profile(request):

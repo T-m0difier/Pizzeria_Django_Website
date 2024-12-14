@@ -8,10 +8,12 @@ from django.views.decorators.cache import cache_control
 
 
 # Create your views here. 
+#Homepage view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
     return render(request, 'home.html')
 
+#Index/Products page view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def index(request):
     pizzas = Pizza.objects.all()
@@ -21,12 +23,7 @@ def index(request):
         'available_sizes': available_sizes,
     })
 
-def pizza_detail(request, pizza_id):
-    pizza = Pizza.objects.get(id=pizza_id)
-    return render(request, "products/pizza_detail.html", {
-        "pizza": pizza
-    })
-
+#Filtering + Searching Functionalities View
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def pizza_list(request):
     # Fetch all pizzas
@@ -52,7 +49,7 @@ def pizza_list(request):
         'available_sizes': available_sizes,
     })
 
-
+#Build You own Pizza view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def build_pizza(request):
@@ -116,6 +113,8 @@ def cart(request):
     # Render the updated cart
     return render(request, 'products/cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
+
+#Add to cart view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def add_to_cart(request, pizza_id):
@@ -149,7 +148,7 @@ def add_to_cart(request, pizza_id):
     return HttpResponse("Invalid request method", status=405)
 
 
-
+#Checkout view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def checkout(request):
@@ -184,7 +183,7 @@ def checkout(request):
     total_price = sum(item.price for item in cart_items)
     return render(request, 'products/checkout.html', {'cart_items': cart_items, 'total_price': total_price})
 
-
+#Order History view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @login_required
 def order_history(request):
@@ -218,7 +217,7 @@ def order_history(request):
 
     return render(request, 'products/order_history.html', {'orders': orders})
 
-
+#From this point on, the views are for the staff capabilities
 
 def staff_required(user):
     return user.is_staff
@@ -242,6 +241,7 @@ def manage_toppings(request):
         'toppings': toppings,
     })
 
+#Edit toppings
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(staff_required)
 def edit_topping(request, topping_id):
@@ -279,6 +279,7 @@ def manage_sauces(request):
         'sauces': sauces,
     })
 
+#Edit sauces
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(staff_required)
 def edit_sauce(request, sauce_id):
@@ -315,6 +316,7 @@ def manage_crusts(request):
         'crusts': crusts,
     })
 
+#Edit crusts
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(staff_required)
 def edit_crust(request, crust_id):
@@ -350,7 +352,7 @@ def manage_sizes(request):
         'form': form,
         'sizes': sizes,
     })
-
+#Edit sizes
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(staff_required)
 def edit_size(request, size_id):
@@ -387,6 +389,7 @@ def manage_pizzas(request):
         'pizzas': pizzas,
     })
 
+#Edit pizzas
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(staff_required)
 def edit_pizza(request, pizza_id):
@@ -404,6 +407,7 @@ def edit_pizza(request, pizza_id):
         'form': form,
     })
 
+#Staff portal view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 @user_passes_test(staff_required)
 def staff_portal(request):

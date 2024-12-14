@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 
-
+#Registration Form
 class NewUserForm(UserCreationForm):  
     email = forms.EmailField(required=True)
 
@@ -12,7 +12,7 @@ class NewUserForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
-
+#Profile update form
 class UserProfileUpdateForm(UserChangeForm):
     # Adding fields for updating the password
     password = forms.CharField(

@@ -6,12 +6,13 @@
 {% block navbar %}
     {% include "navbar.html" %}
 {% endblock %}
-
+<!--ends here-->
+<!--Main Content-->
 {% block body %}
 <div class="container my-5">
     <h2>Checkout</h2>
     <p>Review your order before confirming:</p>
-    
+    <!--Checkout Table-->
     {% if cart_items %}
         <table class="table">
             <thead>
@@ -29,20 +30,21 @@
                 {% endfor %}
             </tbody>
         </table>
+        <!--Dynamic Price Display-->
         <h4 class="mt-4">Total: ${{ total_price }}</h4>
         <form method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-success">Confirm Purchase <i class="bi bi-cart-check-fill"></i></button>
-            
+            <button type="submit" class="btn btn-success">Confirm Purchase <i class="bi bi-cart-check-fill"></i></button>    
         </form>
         <p>OR</p>
         <a href="{% url 'cart' %}" class="btn btn-primary">Back to Cart <i class="bi bi-cart-fill"></i></a>
+    <!--If cart Empty-->
     {% else %}
         <p>Your cart is empty. <a href="{% url 'index' %}">Go back to shop <i class="bi bi-shop"></i></a>.</p>
     {% endif %}
 </div>
 {% endblock %}
-
+<!-- Main content ends here-->
 <!--Footer-->
 {% block footer %}
     {% include "footer.html" %}

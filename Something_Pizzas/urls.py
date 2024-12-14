@@ -23,14 +23,14 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('products/', include('products.urls')),
-    path('register/', register_request, name="register"), 
-    path('login/', login_request, name="login"),  
-    path('logout/', logout_request, name="logout"),
+    path('', views.home, name='home'), #home page url
+    path('products/', include('products.urls')), #products/index page url
+    path('register/', register_request, name="register"), #register page url
+    path('login/', login_request, name="login"),  #login page url
+    path('logout/', logout_request, name="logout"), #logout url
     path('profile/', profile, name="profile"),  # Profile page URL  
-    path('profile/update/', update_profile, name="update_profile"),
-    path('admin/', admin.site.urls),
+    path('profile/update/', update_profile, name="update_profile"), #profile update url
+    path('admin/', admin.site.urls), #admin site url
 ]
 
 if settings.DEBUG:
