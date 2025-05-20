@@ -6,45 +6,52 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 
-#Registration view
+#register
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            print("User created:", user)  # Debug: Output the created user object
-            messages.success(request, f"User Created.")
+            messages.success(request, "User Created.")
             login(request, user)
             return redirect("/products")
-
         else:
-            print("Form errors:", form.errors)  # Debug form validation issues
-    else:
-        form = NewUserForm()
-    return render(request, "register/register.html", {"register_form": form})
+            return render(request, "products/index.html", {
+                "register_form": form,
+                "register_error": True 
+            })
 
-#Login request view
+    form = NewUserForm()
+    return render(request, "layout.html", {"register_form": form})
+
+
+#login
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-def login_request (request):
+def login_request(request):
     if request.user.is_authenticated:
         return redirect("/products")
 
     if request.method == "POST":
-        form = AuthenticationForm (request, data=request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get ('username')
-            password = form.cleaned_data.get ('password')
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
-            if user is not None:
+            if user:
                 login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
+                messages.success(request, f"You are now logged in as {username}.")
                 return redirect("/products")
-            else: 
-                messages.error(request, "Invalid username or password.")
-    else: 
-        form = AuthenticationForm()
-    return render(request, "register/login.html", {"login_form": form})
+        return render(request, "products/index.html", {
+            "login_form": form,
+            "login_error": True
+        })
+
+    form = AuthenticationForm()
+    return render(request, "layout.html", {"login_form": form})
+
+
+
 
 #logout request view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -52,7 +59,7 @@ def logout_request (request):
     logout(request)
     request.session.flush()  # Clears all session data
     messages.success(request, "You have successfully logged out.")
-    return redirect("/login")
+    return redirect("/products")
 
 # View to display user profile
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -66,21 +73,27 @@ def profile(request):
 def update_profile(request):
     if request.method == 'POST':
         form = UserProfileUpdateForm(request.POST, instance=request.user)
+
         if form.is_valid():
             user = form.save(commit=False)
-
-            # Handle password update only if the field is not empty
             new_password = form.cleaned_data.get('password')
-            if new_password:  # Only update the password if it's provided
+
+            # Update password if provided
+            if new_password:
                 user.set_password(new_password)
+                user.save()
+                update_session_auth_hash(request, user)
+            else:
+                user.save()
 
-            user.save()
-            update_session_auth_hash(request, user)  # Keep user logged in after password change
-            messages.success(request, 'Your profile has been updated successfully!')
-            return redirect('profile')
+            messages.success(request, "Profile updated successfully.")
+            return redirect("/products")
         else:
-            messages.error(request, 'Please correct the errors below.')
-    else:
-        form = UserProfileUpdateForm(instance=request.user)
+            return render(request, "products/index.html", {
+                "used_form": form,
+                "update_error": True,
+                "open_modal" : "updateProfileModal"
+            })
 
-    return render(request, 'register/update_profile.html', {'form': form})
+    form = UserProfileUpdateForm(instance=request.user)
+    return render(request, "register/update_profile.html", {"form": form})

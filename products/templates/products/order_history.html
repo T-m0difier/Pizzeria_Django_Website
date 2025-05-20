@@ -44,7 +44,6 @@
 
                             <button name="action" value="repeat" class="btn btn-primary">Repeat Order <i class="bi bi-arrow-clockwise"></i></button>
                             
-                            <button name="action" value="delete" class="btn btn-danger">Delete <i class="bi bi-trash-fill"></i></button>
                         </form>
                     </td>
                 </tr>
@@ -79,4 +78,9 @@
 <!--Footer-->
 {% block footer %}
     {% include "footer.html" %}
+{% endblock %}
+
+<!--Modals-->
+{% block modals %}
+    {% include "modals.html" %}
 {% endblock %}

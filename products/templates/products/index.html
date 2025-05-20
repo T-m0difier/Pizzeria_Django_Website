@@ -51,36 +51,104 @@
                         <strong>Price:</strong> ${{ pizza.price }}
                     </p>
 
-                    <!-- Toggle button for toppings -->
                     <div>
-                        <button class="btn2 mt-2" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#pizzaToppings{{ pizza.id }}" aria-expanded="false" 
-                            aria-controls="pizzaToppings{{ pizza.id }}">
-                            Toppings <i class="bi bi-caret-down-fill"></i>
-                        </button>
-                    </div>
-                        
-
-                    <!-- Collapsible section for toppings -->
-                        <div class="collapse mt-3" id="pizzaToppings{{ pizza.id }}">
-                            <ul class="list-unstyled card-text">
-                                {% for topping in pizza.toppings.all %}
-                                <li>{{ topping.name }} ({{ topping.extra_price }})</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-
-                    <!-- Add to Cart Button -->
-                    <div>
+                        <!-- Quantity + Add to Cart + Customize -->
                         {% if user.is_authenticated %}
+
+                            <button type="button" class="btn btn-secondary mt-2" data-bs-toggle="modal" data-bs-target="#customizeModal{{ pizza.id }}">
+                                Customize & Add
+                            </button>
                             <form action="{% url 'add_to_cart' pizza.id %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-success mt-3">Add to Cart <i class="bi bi-cart-plus-fill"></i></button>
+        
+                                <!-- Quantity -->
+                                <div class="input-group mt-2">
+                                    <input type="number" name="quantity" min="1" max="10" value="1" class="form-control" required />
+                                        <button type="submit" class="btn btn-success">
+                                            Add to Cart <i class="bi bi-cart-plus"></i>
+                                        </button>
+                                </div>
                             </form>
+                            
                         {% else %}
-                            <a href="{% url 'login' %}?next={% url 'index' %}" class="btn btn-primary mt-3">Login to Add to Cart</a>
+                            <div class="mt-3">
+                            <!-- Trigger login modal -->
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">
+                                    Login to Add to Cart
+                                </button>
+                            </div>
                         {% endif %}
                     </div>
+                </div>
+            </div>
+        </div>
+         <!-- Customize Modal -->
+        <div class="modal fade" id="customizeModal{{ pizza.id }}" tabindex="-1" aria-labelledby="customizeModalLabel{{ pizza.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form method="post" action="{% url 'add_to_cart' pizza.id %}">
+        
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="customizeModalLabel{{ pizza.id }}">Customize {{ pizza.name }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        {% csrf_token %}
+                        <div class="modal-body">
+                    <!-- Quantity -->
+                            <div class="mb-3">
+                                <label for="quantity{{ pizza.id }}" class="form-label">Quantity</label>
+                                <input type="number" name="quantity" id="quantity{{ pizza.id }}" min="1" max="10" value="1" class="form-control" required>
+                            </div>
+
+                    <!-- Size -->
+                            <div class="mb-3">
+                                <label for="size{{ pizza.id }}" class="form-label">Size</label>
+                                <select name="size" id="size{{ pizza.id }}" class="form-select" required>
+                                    {% for size in sizes %}
+                                        <option value="{{ size.id }}" {% if size == pizza.size %}selected{% endif %}>{{ size.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                    <!-- Crust -->
+                            <div class="mb-3">
+                                <label for="crust{{ pizza.id }}" class="form-label">Crust</label>
+                                <select name="crust" id="crust{{ pizza.id }}" class="form-select" required>
+                                    {% for crust in crusts %}
+                                        <option value="{{ crust.id }}" {% if crust == pizza.crust_type %}selected{% endif %}>{{ crust.type }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                    <!-- Sauce -->
+                            <div class="mb-3">
+                                <label for="sauce{{ pizza.id }}" class="form-label">Sauce</label>
+                                <select name="sauce" id="sauce{{ pizza.id }}" class="form-select" required>
+                                    {% for sauce in sauces %}
+                                        <option value="{{ sauce.id }}" {% if sauce == pizza.sauce %}selected{% endif %}>{{ sauce.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                    <!-- Toppings -->
+                            <div class="mb-3">
+                                <label class="form-label">Toppings</label>
+                                <div class="form-check">
+                                    {% for topping in all_toppings %}
+                                        <input class="form-check-input" type="checkbox" name="toppings" id="topping{{ topping.id }}_{{ pizza.id }}" value="{{ topping.id }}"
+                                            {% if topping in pizza.toppings.all %}checked{% endif %}>
+                                            <label class="form-check-label me-3" for="topping{{ topping.id }}_{{ pizza.id }}">
+                                                {{ topping.name }} {% if topping.extra_price %}(+${{ topping.extra_price }}){% endif %}
+                                            </label><br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Add to Cart</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -99,3 +167,7 @@
     {% include "footer.html" %}
 {% endblock %}
 
+<!--Modals-->
+{% block modals %}
+    {% include "modals.html" %}
+{% endblock %}

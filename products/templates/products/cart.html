@@ -24,6 +24,7 @@
                     <th>Crust</th>
                     <th>Sauce</th>
                     <th>Toppings</th>
+                    <th>Quantity</th>
                     <th>Price</th>
                     <th>Actions</th>
                 </tr>
@@ -40,6 +41,7 @@
                             {{ topping.name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </td>
+                    <td>{{ item.quantity }}</td>
                     <td>${{ item.price }}</td>
                     <td>
                         <form method="post">
@@ -70,4 +72,9 @@
 <!--Footer-->
 {% block footer %}
     {% include "footer.html" %}
+{% endblock %}
+
+<!--Modals-->
+{% block modals %}
+    {% include "modals.html" %}
 {% endblock %}

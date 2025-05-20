@@ -4,7 +4,6 @@ from . import views
 urlpatterns = [
     path("", views.index, name="index"),  # Products Page url
     path("pizzas/", views.pizza_list, name="pizza_list"),  # Filtering & Searching Functionality url
-    path('build/', views.build_pizza, name='build_pizza'), # Pizza Building Functionality url
     path('cart/', views.cart, name='cart'), # Cart Page url
     path('add_to_cart/<int:pizza_id>/', views.add_to_cart, name='add_to_cart'), # Add to cart url
     path('checkout/', views.checkout, name='checkout'), # Checkout url

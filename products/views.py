@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import BuildYourPizzaForm, ToppingForm, SauceForm, CrustForm, SizeForm, PizzaForm
+from .forms import ToppingForm, SauceForm, CrustForm, SizeForm, PizzaForm
 from .models import Pizza, Size, CartItem, Order, OrderItem, Crust, Sauce, Topping
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -18,76 +18,55 @@ def home(request):
 def index(request):
     pizzas = Pizza.objects.all()
     available_sizes = Size.objects.all()
+
+    # Include data required for customization modals
+    sizes = Size.objects.all()
+    crusts = Crust.objects.all()
+    sauces = Sauce.objects.all()
+    all_toppings = Topping.objects.all()
+
     return render(request, 'products/index.html', {
         'pizzas': pizzas,
         'available_sizes': available_sizes,
+        'sizes': sizes,
+        'crusts': crusts,
+        'sauces': sauces,
+        'all_toppings': all_toppings,
     })
 
 #Filtering + Searching Functionalities View
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def pizza_list(request):
-    # Fetch all pizzas
     pizzas = Pizza.objects.all()
-
-    # Get all available sizes dynamically
     available_sizes = Size.objects.all()
 
-    # Filter parameters
-    size_filter = request.GET.get('size', None)
-    search_query = request.GET.get('search', None)
+    # Fetch all data needed for customization modals
+    sizes = Size.objects.all()
+    crusts = Crust.objects.all()
+    sauces = Sauce.objects.all()
+    all_toppings = Topping.objects.all()
 
-    # Apply size filter
+    # Filter parameters
+    size_filter = request.GET.get('size')
+    search_query = request.GET.get('search')
+
     if size_filter:
         pizzas = pizzas.filter(size__name=size_filter)
 
-    # Apply search filter
     if search_query:
         pizzas = pizzas.filter(name__icontains=search_query)
+
+    open_modal = request.session.pop('open_modal', None)
 
     return render(request, 'products/index.html', {
         'pizzas': pizzas,
         'available_sizes': available_sizes,
+        'sizes': sizes,
+        'crusts': crusts,
+        'sauces': sauces,
+        'all_toppings': all_toppings,
+        'open_modal': open_modal,
     })
-
-#Build You own Pizza view
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@login_required
-def build_pizza(request):
-    if request.method == 'POST':
-        form = BuildYourPizzaForm(request.POST)
-        if form.is_valid():
-            # Gather pizza details
-            name = form.cleaned_data['name']
-            size = form.cleaned_data['size']
-            crust = form.cleaned_data['crust_type']
-            sauce = form.cleaned_data['sauce']
-            toppings = form.cleaned_data['toppings']
-
-            # Calculate pizza price
-            base_price = 10  # Default base price
-            total_price = base_price
-            total_price += crust.extra_price
-            total_price += sauce.extra_price
-            total_price += sum(topping.extra_price for topping in toppings)
-            total_price *= size.multiplier
-            total_price = round(total_price, 2)
-
-            # Add the pizza to the user's cart
-            cart_item = CartItem.objects.create(
-                user=request.user,
-                pizza_name=name,
-                size=size,
-                crust=crust,
-                sauce=sauce,
-                price=total_price
-            )
-            cart_item.toppings.set(toppings)
-            messages.success(request, "Item added to the cart!")
-            return redirect('cart')  # Redirect to the cart page
-    else:
-        form = BuildYourPizzaForm()
-
-    return render(request, 'products/build_pizza.html', {'form': form})
 
 #cart view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -119,31 +98,42 @@ def cart(request):
 @login_required
 def add_to_cart(request, pizza_id):
     if request.method == "POST":
-        # Fetch the pizza instance
         pizza = get_object_or_404(Pizza, id=pizza_id)
+        
+        # Get customization from POST
+        size_id = request.POST.get("size")
+        crust_id = request.POST.get("crust")
+        sauce_id = request.POST.get("sauce")
+        topping_ids = request.POST.getlist("toppings")
+        quantity = int(request.POST.get("quantity", 1))
 
-        # Calculate the pizza price dynamically
-        pizza_price = pizza.price
+        # Fetch related objects
+        size = get_object_or_404(Size, id=size_id) if size_id else pizza.size
+        crust = get_object_or_404(Crust, id=crust_id) if crust_id else pizza.crust_type
+        sauce = get_object_or_404(Sauce, id=sauce_id) if sauce_id else pizza.sauce
+        toppings = Topping.objects.filter(id__in=topping_ids) if topping_ids else pizza.toppings.all()
 
-        # Create a new CartItem for the logged-in user
+        # Calculate price per pizza
+        base_price = 10
+        price = base_price + crust.extra_price + sauce.extra_price + sum(t.extra_price for t in toppings)
+        price *= size.multiplier
+        total_price = round(price * quantity, 2)
+
+        # Create cart item
         cart_item = CartItem.objects.create(
             user=request.user,
             pizza_name=pizza.name,
-            size=pizza.size,
-            crust=pizza.crust_type,
-            sauce=pizza.sauce,
-            price=pizza_price
+            size=size,
+            crust=crust,
+            sauce=sauce,
+            price=total_price,
+            quantity=quantity
         )
-        cart_item.toppings.set(pizza.toppings.all())
-
-        # Save the cart item
+        cart_item.toppings.set(toppings)
         cart_item.save()
 
-        # Display a success message
-        messages.success(request, f"{pizza.name} was added to your cart.")
-
-        # Redirect back to the index page
-        return redirect('index')
+        messages.success(request, f"{pizza.name} (x{quantity}) was added to your cart.")
+        return redirect("index")
 
     return HttpResponse("Invalid request method", status=405)
 

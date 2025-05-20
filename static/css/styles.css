@@ -1,127 +1,132 @@
 /* Global Body Styles */
 body {
-    background: linear-gradient(135deg, #f5e0b7 0%, #e7a977 50%, #d97b46 100%); /* Warm, pizza-inspired gradient */
-    color: #2c2c2c; /* Dark gray for clear readability */
     margin: 0;
     padding: 0;
-    font-family: "Poppins", Arial, sans-serif; /* Clean and modern font */
-    min-height: 100vh; /* Ensure the background covers the full screen height */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    background-attachment: fixed; /* Keep the background static while scrolling */
+    font-family: "Poppins", Arial, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(135deg, #003b6f 0%, #2e8cc4 40%, #69f3c9 100%);
 }
 
+/* Box and Container */
 .box {
-    background-color: #2c2c2c;
+    background-color: #f5fff9;
     padding: 20px;
     border-radius: 10px;
-    max-width: 600px; /* Limit the width of the content area */
-    margin: 20px auto; /* Center the content area */
+    max-width: 600px;
+    margin: 20px auto;
     position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .container {
     padding: 20px;
     border-radius: 10px;
-    max-width: 600px; /* Limit the width of the content area */
-    margin: 20px auto; /* Center the content area */
+    max-width: 600px;
+    margin: 20px auto;
     position: relative;
     text-align: center;
-        
 }
 
 /* Navbar */
 .navbar {
-    background-color: #212529; /* Dark navbar */
-    color: #fff;
+    background-color: #ffffff;
+    color: #003b6f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar a {
-    color: #fff;
+    color: #003b6f;
     text-decoration: none;
     padding: 8px 12px;
+    font-weight: bold;
 }
 
 .navbar a:hover {
-    color: #adb5bd;
+    color: #69f3c9;
 }
-
-
 
 /* Footer */
 .footer {
-    position: fixed; /* Keeps the footer at the bottom of the viewport */
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #212529; /* Dark footer background */
-    color: white; /* Footer text color */
+    background-color: #ffffff;
+    color: #003b6f;
     text-align: center;
     padding: 10px 0;
-    z-index: 1000; /* Ensures the footer is always on top of other content */
+    z-index: 1000;
+    border-top: 3px solid #2e8cc4;
 }
 
-/* Footer link styles */
 .footer a {
-    color: white;
+    color: #003b6f;
     margin-left: 15px;
     text-decoration: none;
 }
 
 .footer a:hover {
     text-decoration: underline;
+    color: #69f3c9;
 }
 
 /* Cards */
 .card {
-    border: 2px solid #212529;
+    border: 2px solid #003b6f;
+    border-radius: 10px;
 }
 
 .card-body {
-    background-color: #212529;
+    background-color: #f5fff9;
     border-radius: 5px;
 }
 
 .card-text2 {
-    color: #fff;
+    color: #003b6f;
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 15px;
 }
 
 .card-text {
-    color: #fff;
+    color: #1a4a3f;
     font-size: 0.9rem;
     margin-bottom: 15px;
 }
 
 .pizza-image {
-    width: 100%;         /* Makes the image scale to fill the width of the card */
-    height: auto;        /* Maintains the aspect ratio of the image */
-    max-width: 100%;     /* Prevents the image from becoming too large */
-    max-height: 250px;   /* You can adjust this value to suit your card's height */
-    object-fit: cover;   /* Ensures the image covers the space without stretching */
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 250px;
+    object-fit: cover;
 }
 
 /* Buttons */
 .btn2 {
     background-color: transparent;
-    color: #fff;
-    border: 2px solid #fff;
+    color: #003b6f;
+    border: 2px solid #2e8cc4;
     border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
 
+.btn2:hover {
+    background-color: #2e8cc4;
+    color: white;
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: #2e8cc4;
     color: #fff;
 }
 
 .btn-primary:disabled {
-    background-color: #6c757d;
+    background-color: #a3b9a9;
 }
 
 .btn-danger {
-    background-color: #dc3545;
+    background-color: #3545dc;
     color: #fff;
 }
 
@@ -130,28 +135,24 @@ body {
     color: #fff;
 }
 
-
-
 .btn-drop {
-    background-color: #fc5000;
+    background-color: #00c2ff;
     color: #fff;
 }
 
 /* Forms */
-/* Center the form on the page */
-form {
-    margin: 20px auto; /* Center the form horizontally */
+.custom-form {
+    margin: 20px auto;
     display: flex;
-    flex-direction: column; /* Stack the fields vertically */
-    align-items: center; /* Center the fields horizontally */
-    justify-content: center; /* Center the fields vertically (optional, if the container height allows) */
-    max-width: 200px; /* Optional: Limit form width */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px; /* slightly wider */
 }
 
-/* Style the form controls */
-form .form-control {
-    background-color: #212529; /* dark background for inputs */
-    color: #fff; /* light text */
+.custom-form .form-control {
+    background-color: #ffffff;
+    color: #003b6f;
     border: 1px solid #ddd;
     padding: 10px;
     font-size: 1rem;
@@ -161,39 +162,30 @@ form .form-control {
     margin-bottom: 15px;
 }
 
-form label {
-    color: #333;
+.custom-form label {
+    color: #003b6f;
     font-weight: bold;
     margin-bottom: 5px;
-    text-align: center; 
+    text-align: center;
 }
 
-/* Fix for placeholder and focus states (unchanged) */
-form .form-control::placeholder {
-    color: #bec4c9;
+.custom-form .form-control::placeholder {
+    color: #729f87;
 }
 
-form .form-control:focus {
-    background-color: #212529 !important;
-    color: #fff;
-    border-color: #ddd !important;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+.custom-form .form-control:focus {
+    background-color: #ffffff !important;
+    color: #003b6f;
+    border-color: #2e8cc4 !important;
+    box-shadow: 0 0 5px rgba(105, 255, 213, 0.5);
 }
-
-form .form-control:active,
-form .form-control:focus {
-    outline: none;
-}
-
-
-
 
 /* Tables */
 .table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    background-color: #212529;
+    background-color: #ffffff;
 }
 
 .table th,
@@ -201,12 +193,12 @@ form .form-control:focus {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: left;
-    color: #fff;
+    color: #003b6f;
 }
 
 .table th {
-    background-color: #212529;
-    color: #fff;
+    background-color: #e3fff7;
+    color: #003b6f;
     font-weight: bold;
 }
 
@@ -219,10 +211,9 @@ form .form-control:focus {
     .navbar {
         font-size: 0.9rem;
     }
-
 }
 
-/*Text Justificator*/
+/* Text Justificator */
 .justify-text {
-	text-align: justify;
+    text-align: justify;
 }

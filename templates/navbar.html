@@ -2,7 +2,7 @@
 
 
 {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation" aria-label="Main navigation">
+<nav class="sticky-top navbar navbar-expand-lg navbar-light bg-light" role="navigation" aria-label="Main navigation">
     <a class="navbar-brand" href="{% url 'home' %}" aria-label="Tactical Pizzas Homepage">
         <img src="{% static 'Images/logo.png' %}" alt="Company Logo" style="height: 40px; vertical-align: middle;">
         <span class="ml-2">Tactical Pizzas</span>
@@ -18,13 +18,15 @@
             <!--Links for Registered Users-->
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'build_pizza' %}">Build Your Pizza</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'cart' %}">Cart <i class="bi bi-cart-fill"></i></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown item" href="#" data-bs-toggle="modal" data-bs-target="#accountModal">Account</a></li>
+                        <li><a class="dropdown item" href="{% url 'order_history' %}">Order History</a></li>
+                        <li><a class="dropdown item" href="{% url 'logout' %}">Logout <i class="bi bi-box-arrow-right"></i></a>
+                    </ul>
                 </li>
                 {% if user.is_superuser %}
                 <!-- Admin Link -->
@@ -37,13 +39,13 @@
                     <a class="nav-link" href="{% url 'staff_portal' %}">Staff Portal</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Logout <i class="bi bi-box-arrow-right"></i></a>
-                </li>
             {% else %} <!--Login Link-->
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Login <i class="bi bi-box-arrow-in-right"></i></a>
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#authModal">
+                        Login <i class="bi bi-box-arrow-in-right"></i>
+                    </a>
                 </li>
+            
             {% endif %}
         </ul>
     </div>

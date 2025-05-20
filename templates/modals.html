@@ -1,0 +1,109 @@
+{% load static %}
+
+
+{% block modals %}
+  <!-- Account Modal -->
+    <div class="modal fade" id="accountModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title">Account Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Address:</strong> {{ user.address }}</p>
+                    <p><strong>Phone:</strong> {{ user.phone_number }}</p>
+                    <button class="btn btn-primary" id="openUpdateProfile">Update Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!-- Authentication Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    <div id="loginForm">
+                        {% load crispy_forms_tags %}
+                        <form method="POST" action="{% url 'login' %}" class="custom-form">
+                            {% csrf_token %}
+                            {{ login_form |crispy }}
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                        <p class="text-center mt-2">
+                            Don't have an account? <a href="#" id="toggleRegister">Create an account</a>.
+                        </p>
+                    </div>
+
+                    <!-- Register Form (Hidden Initially) -->
+                    <div id="registerForm" style="display: none;">
+                        {% load crispy_forms_tags %}
+                        <form method="POST" action="{% url 'register' %}" class="custom-form">
+                            {% csrf_token %}
+                            {{ register_form |crispy }}
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                        <p class="text-center mt-2">
+                            Already have an account? <a href="#" id="toggleLogin">Login instead</a>.
+                        </p>
+                    </div>
+                    
+                    <span id="loginError" style="display:none;">{{ login_error }}</span>
+                    <span id="registerError" style="display:none;">{{ register_error }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Profile Modal -->
+    <div class="modal fade" id="updateProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                
+                <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Update Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                
+                <form method="post" action="{% url 'update_profile' %}" class="custom-form">
+                    {% csrf_token %}
+                    
+                    <div class="modal-body">
+                        {% load crispy_forms_tags %}
+                        {%if used_form %}
+                            {{ used_form|crispy }}
+                        {% else %}
+                            {{ update_profile_form|crispy }}
+                        {% endif %}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}
+
+
+
