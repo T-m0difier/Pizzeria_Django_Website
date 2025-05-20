@@ -60,6 +60,7 @@
                                     {{ topping.name }}{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                                 <br>
+                                <strong>Quantity:</strong> x{{ item.quantity}}
                                 <strong>Price:</strong> ${{ item.price }}
                             </li>
                             {% endfor %}

@@ -5,7 +5,7 @@ from .models import Pizza, Size, CartItem, Order, OrderItem, Crust, Sauce, Toppi
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.views.decorators.cache import cache_control
-
+from django.db.models import Count
 
 # Create your views here. 
 #Homepage view
@@ -113,6 +113,20 @@ def add_to_cart(request, pizza_id):
         sauce = get_object_or_404(Sauce, id=sauce_id) if sauce_id else pizza.sauce
         toppings = Topping.objects.filter(id__in=topping_ids) if topping_ids else pizza.toppings.all()
 
+        possible_items = CartItem.objects.filter(
+            user = request.user,
+            size = size,
+            crust = crust,
+            sauce = sauce).annotate(num_toppings = Count('toppings')).filter(num_toppings=toppings.count())
+
+        for item in possible_items:
+            if set(item.toppings.all()) == set(toppings):
+                item.quantity += quantity
+                item.price += (item.price / (item.quantity -quantity)) * quantity
+                item.save()
+                messages.success(request, f"Updated cart.")
+                return redirect('index')
+
         # Calculate price per pizza
         base_price = 10
         price = base_price + crust.extra_price + sauce.extra_price + sum(t.extra_price for t in toppings)
@@ -159,6 +173,7 @@ def checkout(request):
                 crust=item.crust,
                 sauce=item.sauce,
                 price=item.price,
+                quantity=item.quantity
             )
             order_item.toppings.set(item.toppings.all())
 
@@ -184,26 +199,27 @@ def order_history(request):
         order_id = request.POST.get("order_id")
         action = request.POST.get("action")
 
-        if order_id and action:
+        if order_id and action == "repeat":
             order = get_object_or_404(Order, id=order_id, user=request.user)
+            
+            
+            #Clear the Cart before repeating an order
+            CartItem.objects.filter(user=request.user).delete()
 
-            if action == "delete":
-                order.delete()
-                messages.success(request, "Order deleted successfully.")
-            elif action == "repeat":
-                # Add the order items back to the cart
-                for item in order.items.all():
-                    cart_item = CartItem.objects.create(
-                        user=request.user,
-                        pizza_name=item.pizza_name,
-                        size=item.size,
-                        crust=item.crust,
-                        sauce=item.sauce,
-                        price=item.price,
-                    )
-                    cart_item.toppings.set(item.toppings.all())
-                messages.success(request, "Order added back to your cart.")
-                return redirect('cart')
+            # Add the order items back to the cart
+            for item in order.items.all():
+                cart_item = CartItem.objects.create(
+                    user=request.user,
+                    pizza_name=item.pizza_name,
+                    size=item.size,
+                    crust=item.crust,
+                    sauce=item.sauce,
+                    price=item.price,
+                    quantity=item.quantity
+                )
+                cart_item.toppings.set(item.toppings.all())
+            messages.success(request, "Order added back to your cart.")
+            return redirect('cart')
 
     return render(request, 'products/order_history.html', {'orders': orders})
 
