@@ -27,7 +27,10 @@ class SizeForm(ModelForm):
 class PizzaForm(ModelForm):
     class Meta:
         model = Pizza
-        fields = ['name', 'size', 'crust_type', 'sauce', 'toppings']
+        fields = ['name', 'image', 'size', 'crust_type', 'sauce', 'toppings']
+        widgets = {
+            'toppings': forms.CheckboxSelectMultiple,
+        }
 
 
 

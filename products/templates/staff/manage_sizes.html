@@ -12,12 +12,12 @@
 {% block body %}
 <div class="container my-5">
     <h2>Manage Sizes</h2>
-    <form method="post">
+    <form method="post" class="custom-form">
         {% csrf_token %}
         {{ form|crispy }}
+        </br>
         <button type="submit" class="btn btn-success">Save</button>
     </form>
-    <a class="btn btn-primary" href="{% url 'staff_portal' %}">Back to Staff Portal</a>
     <h3 class="mt-5">Existing Sizes</h3>
     <ul>
         {% for size in sizes %}

@@ -12,9 +12,10 @@
 {% block body %}
 <div class="container my-5">
     <h2>Edit Size</h2>
-    <form method="post">
+    <form method="post" class="custom-form">
         {% csrf_token %}
         {{ form|crispy }}
+        </br>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>

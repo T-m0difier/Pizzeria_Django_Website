@@ -30,6 +30,4 @@ urlpatterns = [
     path('staff/manage_pizzas/', views.manage_pizzas, name='manage_pizzas'),
     path('staff/manage_pizzas/edit/<int:pizza_id>/', views.edit_pizza, name='edit_pizza'),
     
-    # Portal
-    path('staff/portal/', views.staff_portal, name='staff_portal'),
 ]

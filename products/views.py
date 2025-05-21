@@ -413,8 +413,3 @@ def edit_pizza(request, pizza_id):
         'form': form,
     })
 
-#Staff portal view
-@cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@user_passes_test(staff_required)
-def staff_portal(request):
-    return render(request, 'staff/portal.html')

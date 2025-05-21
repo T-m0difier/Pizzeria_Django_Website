@@ -34,9 +34,18 @@
                     <a class="nav-link" href="/admin/">Admin Dashboard</a>
                 </li>
                 {% elif user.is_staff %}
-                <!-- Staff Link -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'staff_portal' %}">Staff Portal</a>
+                <!-- Staff Portal -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="staffDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Staff Dashboard
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="staffDropdown">
+                        <li><a class="dropdown-item" data-section="size" href="{% url 'manage_sizes' %}">Manage Size</a></li>
+                        <li><a class="dropdown-item" data-section="crust" href="{% url 'manage_crusts' %}">Manage Crust</a></li>
+                        <li><a class="dropdown-item" data-section="sauce" href="{% url 'manage_sauces' %}">Manage Sauce</a></li>
+                        <li><a class="dropdown-item" data-section="toppings" href="{% url 'manage_toppings' %}">Manage Toppings</a></li>
+                        <li><a class="dropdown-item" data-section="pizza" href="{% url 'manage_pizzas' %}">Manage Pizza</a></li>
+                    </ul>
                 </li>
                 {% endif %}
             {% else %} <!--Login Link-->

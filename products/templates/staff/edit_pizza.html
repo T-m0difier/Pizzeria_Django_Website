@@ -12,9 +12,10 @@
 {% block body %}
 <div class="container my-5">
     <h2>Edit Pizza</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" class="custom-form">
         {% csrf_token %}
         {{ form|crispy }}
+        </br>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>
