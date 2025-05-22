@@ -43,13 +43,18 @@
                         <img src="{% static 'images/placeholder.png' %}" alt="No image available" class="pizza-image">
                     {% endif %}
                     <h4 class="card-text2">{{ pizza.name }}</h4>
-                    <p class="card-text">
+                    <p class="card-text "  style="display: none;">
                         
                         <strong>Size:</strong> {{ pizza.size.name }}<br />
                         <strong>Sauce:</strong> {{ pizza.sauce.name }}<br />
                         <strong>Crust:</strong> {{ pizza.crust_type.type }}<br />
                         <strong>Price:</strong> ${{ pizza.price }}
                     </p>
+                    <p class="card-text ">
+                        
+                        <strong>Description:</strong> {{ pizza.description|truncatewords:20 }}
+                    </p>
+                    
 
                     <div>
                         <!-- Quantity + Add to Cart + Customize -->

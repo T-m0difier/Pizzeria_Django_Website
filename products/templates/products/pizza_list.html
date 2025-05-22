@@ -32,11 +32,14 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ pizza.name }}</h5>
-                    <p class="card-text">
+                    <p class="card-text" style="display: none;">
                         <strong>Size:</strong> {{ pizza.size.name }}<br />
                         <strong>Sauce:</strong> {{ pizza.sauce.name }}<br />
                         <strong>Crust:</strong> {{ pizza.crust_type.type }}<br />
                         <strong>Price:</strong> ${{ pizza.price }}
+                    </p>
+                    <p class="card-text" style="display: none;">
+                        <strong>Description:</strong> {{ pizza.description }}
                     </p>
 
                     <!-- Toggle button for toppings -->

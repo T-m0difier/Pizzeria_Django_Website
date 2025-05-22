@@ -86,7 +86,7 @@ class Pizza(models.Model):
     # Image field to upload pizza images
     image = models.ImageField(upload_to='pizzas/', null=True, blank=True)
 
-
+    description = models.TextField(blank=True, null=True)
 
     # Dynamic Price property
     @property

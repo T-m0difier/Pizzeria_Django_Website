@@ -237,3 +237,22 @@ body {
     width: 150px; /* Set width as per your image's size */
     height: auto;
 }
+
+
+.image-container {
+    display: flex;                /* Set up flexbox */
+    justify-content: space-between; /* Space between images */
+    align-items: center;           /* Vertically center images */
+    width: 100%;                   /* Ensure container takes up full width */
+    max-width: 100%;               /* Prevent container from exceeding screen width */
+    position: relative;
+}
+
+.left-image, .right-image {
+    width: 45%;                    /* Set both images to take up 45% of the container width */
+    height: auto;                  /* Maintain aspect ratio of images */
+}
+
+.middle-space {
+    flex-grow: 1;                  /* Take up the remaining space between images */
+}

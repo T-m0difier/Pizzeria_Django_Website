@@ -11,7 +11,10 @@ from django.db.models import Count
 #Homepage view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def home(request):
-    return render(request, 'home.html')
+    # Get the latest 5 pizzas by creation date (or by 'id' if no 'created_at' field)
+    latest_pizzas = Pizza.objects.all().order_by('-id')[:3]  # Limit to 5 pizzas
+
+    return render(request, 'home.html', {'latest_pizzas': latest_pizzas})
 
 #Index/Products page view
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
@@ -412,4 +415,7 @@ def edit_pizza(request, pizza_id):
     return render(request, 'staff/edit_pizza.html', {
         'form': form,
     })
+
+
+
 

@@ -27,9 +27,10 @@ class SizeForm(ModelForm):
 class PizzaForm(ModelForm):
     class Meta:
         model = Pizza
-        fields = ['name', 'image', 'size', 'crust_type', 'sauce', 'toppings']
+        fields = ['name', 'image', 'size', 'crust_type', 'sauce', 'description', 'toppings']
         widgets = {
             'toppings': forms.CheckboxSelectMultiple,
+            'description': forms.Textarea(attrs={'rows': 4, 'cols': 40}),
         }
 
 

@@ -11,13 +11,30 @@
     <h1 class="text-center">Welcome to Tactical Pizzas.</h1>
     <h4 class="text-center">Where we work with simple ingredients, to serve better pizzas!</h4>
     </br>
-    <p class="justify-text text-center">
-        If you are new to our site and you do not know how to navigate it,</br>please take a few minutes to watch our dedicated video through the lin in the footer.
-    </p>
+        <div class="row">
+        <h2 class="text-center w-100">Latest Additions</h2>  <!-- Added text-center and w-100 to center the title -->
+
+        {% for pizza in latest_pizzas %}
+        <div class="col-lg-4 col-md-6 mb-4">  <!-- Corrected grid system here -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ pizza.name }}</h5>
+                    {% if pizza.image %}
+                        <img src="{{ pizza.image.url }}" alt="{{ pizza.name }}" class="pizza-image">
+                    {% else %}
+                        <img alt="No image available" class="pizza-image">
+                    {% endif %}
+                    <p><strong>Description: </strong>{{ pizza.description|truncatewords:20 }}</p>  <!-- Limit description to 20 words -->
+                    <p><strong>Price: ${{ pizza.price }}</strong></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
     </div>
     </br>
-    <p class="justify-text text-center">Want to view our products? Then go to:
-    <a href={% url 'index' %} class=>Products Page</a>.</p>
+    <p class="justify-text text-center">Want to view the entirety of the menu? Then go to:
+    <a href={% url 'index' %} class=>Pizzas</a>.</p>
     
 </div>
 {% endblock %}
