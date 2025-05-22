@@ -217,3 +217,23 @@ body {
 .justify-text {
     text-align: justify;
 }
+
+
+
+/* Positioning the Left Image */
+.top-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px; /* Set width as per your image's size */
+    height: auto;
+}
+
+/* Positioning the Right Image */
+.top-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px; /* Set width as per your image's size */
+    height: auto;
+}
